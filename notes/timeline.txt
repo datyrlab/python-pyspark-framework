@@ -1,0 +1,66 @@
+== Timeline
+
+[source%nowrap, text]
+----
+# PySpark Framework - Python Functional and Object Orientated Programming - Part 1 - ETL
+# https://youtu.be/EttGKeT4e3U
+
+0:00 - intro - welcome if you're a beginner
+2:12 - intro - Python functional and OOP programming with Spark
+4:41 - intro - we'll build a Spark framework starting with ETL
+5:53 - intro - overview of the project structure
+11:53 - intro - overview of the example data
+16:08 - create a project structure for directories and files
+24:49 - create a class object for pyspark and import modules
+34:30 - install missing module pyspark
+38:24 - class basics and defining arguments
+48:57 - job - create var for root path to our project directory
+54:30 - job - create logs using python's logger module
+1:05:55 - job - add root dir path to sys.path then test import of our class
+1:23:56 - class - pass a class var or dictionary as self to a method attr
+1:33:37 - job - function to read a config json file & convert to dict
+1:54:45 - job - function to call class method for a spark session
+2:02:56 - class - create method for spark session
+2:13:54 - downgrade pyspark version - must be same version as spark
+2:18:15 - class - add function to print a dict of our spark settings
+2:36:17 - job - function to stop spark session
+2:40:27 - class - function to set spark logging
+2:46:21 - log4j.properties - update to silence spark logging
+3:00:19 - summary of our framework and code so far
+3:07:26 - job/ class - rename config/ conf argument
+3:11:14 - job - function to call class method to import data
+3:28:26 - class - create method to import data
+3:33:44 - class - import data - function if directory or file
+3:42:59 - class - import data - function if path is a directory
+3:46:26 - class - import data - method to list a directory and filter files
+4:21:20 - class - create method to convert file data to dataframe
+4:24:21 - class - dataframe - import data - add functions for file type
+5:02:18 - class - dataframe - convert CSV file to spark dataframe
+5:09:00 - job - function to transform dataframe
+5:21:15 - class - dataframe - convert mulitple JSON files to one dataframe
+5:28:53 - job - pass all imported dataframes to job transform function
+5:38:45 - job - transform - flatten nested JSON dataframe
+5:49:38 - job - transform - cast columns types, Date and Integer
+
+download the framework
+https://github.com/datyrlab/python-pyspark-framework
+
+https://twitter.com/datyrlab
+
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
