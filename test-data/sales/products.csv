@@ -1,0 +1,65 @@
+product_id,product_description,product_category
+P01,detergent,house
+P02,kitchen roll,house
+P03,bin liners,house
+P04,shower gel,house
+P05,scented candles,house
+P06,fabric softener,house
+P07,cling film,house
+P08,aluminium foil,house
+P09,toilet paper,house
+P10,kitchen knife,house
+P11,dishwasher tablets,house
+P12,ice pack,house
+P13,men's dark green trousers,clothes
+P14,women's shoes,clothes
+P15,jumper,clothes
+P16,men's belt,clothes
+P17,women's black socks,clothes
+P18,men's striped socks,clothes
+P19,men's trainers,clothes
+P20,women's blouse,clothes
+P21,women's red dress,clothes
+P22,avocado,fruit_veg
+P23,cherries,fruit_veg
+P24,scotch bonnets,fruit_veg
+P25,peppers,fruit_veg
+P26,broccoli,fruit_veg
+P27,potatoes,fruit_veg
+P28,grapes,fruit_veg
+P29,easy peeler,fruit_veg
+P30,mango,fruit_veg
+P31,lemon grass,fruit_veg
+P32,onions,fruit_veg
+P33,apples,fruit_veg
+P34,raspberries,fruit_veg
+P35,carrot cake,sweets
+P36,salted caramel dark chocolate,sweets
+P37,gummy bears,sweets
+P38,kombucha,sweets
+P39,ice cream,sweets
+P40,irn bru,sweets
+P41,steak,food
+P42,chicken,food
+P43,mince beef,food
+P44,milk,food
+P45,hummus,food
+P46,activated charcoal croissant,food
+P47,whole chicken,food
+P48,tuna,food
+P49,smoked salmon,food
+P50,camembert,food
+P51,pizza,food
+P52,oats,food
+P53,peanut butter,food
+P54,almond milk,food
+P55,lentil soup,food
+P56,greek yoghurt,food
+P57,parmesan,food
+P58,coconut water,food
+P59,chicken stock,food
+P60,water,food
+P61,red wine,bws
+P62,gin,bws
+P63,cognac,bws
+P64,cigarettes,bws

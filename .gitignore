@@ -1,0 +1,12 @@
+__pycache__
+*_01.*
+*_02.*
+*_03.*
+*.adoc
+*.log
+*.swp
+DELETE
+screens
+spark-context-textfile.json
+spark-session.json
+*twitter*

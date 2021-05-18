@@ -1,0 +1,24 @@
+{"customer_id": "C12", "basket": [{"product_id": "P52", "price": 837}, {"product_id": "P47", "price": 201}, {"product_id": "P47", "price": 1679}], "date_of_purchase": "2020-09-22 01:38:17.490059"}
+{"customer_id": "C19", "basket": [{"product_id": "P08", "price": 152}, {"product_id": "P09", "price": 1799}], "date_of_purchase": "2020-09-22 03:07:17.490059"}
+{"customer_id": "C20", "basket": [{"product_id": "P62", "price": 952}, {"product_id": "P62", "price": 1321}], "date_of_purchase": "2020-09-22 13:29:17.490059"}
+{"customer_id": "C25", "basket": [{"product_id": "P20", "price": 1980}, {"product_id": "P15", "price": 408}], "date_of_purchase": "2020-09-22 09:11:17.490059"}
+{"customer_id": "C26", "basket": [{"product_id": "P39", "price": 533}, {"product_id": "P40", "price": 1802}, {"product_id": "P37", "price": 1341}], "date_of_purchase": "2020-09-22 08:19:17.490059"}
+{"customer_id": "C38", "basket": [{"product_id": "P37", "price": 1038}, {"product_id": "P38", "price": 1931}, {"product_id": "P39", "price": 1003}], "date_of_purchase": "2020-09-22 08:28:17.490059"}
+{"customer_id": "C45", "basket": [{"product_id": "P29", "price": 1488}], "date_of_purchase": "2020-09-21 20:09:17.490059"}
+{"customer_id": "C49", "basket": [{"product_id": "P62", "price": 1808}, {"product_id": "P64", "price": 909}, {"product_id": "P63", "price": 1143}], "date_of_purchase": "2020-09-22 08:58:17.490059"}
+{"customer_id": "C59", "basket": [{"product_id": "P25", "price": 1659}, {"product_id": "P26", "price": 906}, {"product_id": "P33", "price": 851}], "date_of_purchase": "2020-09-22 07:42:17.490059"}
+{"customer_id": "C60", "basket": [{"product_id": "P61", "price": 1688}], "date_of_purchase": "2020-09-22 06:03:17.490059"}
+{"customer_id": "C63", "basket": [{"product_id": "P17", "price": 1624}], "date_of_purchase": "2020-09-22 02:38:17.490059"}
+{"customer_id": "C67", "basket": [{"product_id": "P51", "price": 1103}, {"product_id": "P41", "price": 579}, {"product_id": "P42", "price": 778}], "date_of_purchase": "2020-09-22 04:12:17.490059"}
+{"customer_id": "C80", "basket": [{"product_id": "P49", "price": 1844}, {"product_id": "P53", "price": 1741}], "date_of_purchase": "2020-09-21 21:46:17.490059"}
+{"customer_id": "C90", "basket": [{"product_id": "P34", "price": 688}, {"product_id": "P22", "price": 1225}], "date_of_purchase": "2020-09-21 21:51:17.490059"}
+{"customer_id": "C91", "basket": [{"product_id": "P47", "price": 231}, {"product_id": "P56", "price": 85}, {"product_id": "P48", "price": 137}], "date_of_purchase": "2020-09-22 08:29:17.490059"}
+{"customer_id": "C97", "basket": [{"product_id": "P61", "price": 82}, {"product_id": "P63", "price": 444}], "date_of_purchase": "2020-09-22 10:58:17.490059"}
+{"customer_id": "C98", "basket": [{"product_id": "P62", "price": 337}, {"product_id": "P62", "price": 677}, {"product_id": "P64", "price": 1142}], "date_of_purchase": "2020-09-22 02:45:17.490059"}
+{"customer_id": "C106", "basket": [{"product_id": "P61", "price": 1239}], "date_of_purchase": "2020-09-21 20:59:17.490059"}
+{"customer_id": "C107", "basket": [{"product_id": "P27", "price": 720}, {"product_id": "P24", "price": 709}, {"product_id": "P27", "price": 968}], "date_of_purchase": "2020-09-22 03:06:17.490059"}
+{"customer_id": "C108", "basket": [{"product_id": "P41", "price": 1170}, {"product_id": "P55", "price": 812}, {"product_id": "P54", "price": 549}], "date_of_purchase": "2020-09-22 04:52:17.490059"}
+{"customer_id": "C110", "basket": [{"product_id": "P58", "price": 1017}, {"product_id": "P46", "price": 1812}, {"product_id": "P59", "price": 596}], "date_of_purchase": "2020-09-22 01:23:17.490059"}
+{"customer_id": "C113", "basket": [{"product_id": "P36", "price": 1835}, {"product_id": "P37", "price": 169}, {"product_id": "P39", "price": 1525}], "date_of_purchase": "2020-09-21 23:51:17.490059"}
+{"customer_id": "C122", "basket": [{"product_id": "P40", "price": 392}, {"product_id": "P38", "price": 1396}, {"product_id": "P40", "price": 1634}], "date_of_purchase": "2020-09-22 05:58:17.490059"}
+{"customer_id": "C132", "basket": [{"product_id": "P38", "price": 895}, {"product_id": "P39", "price": 1182}], "date_of_purchase": "2020-09-21 19:51:17.490059"}

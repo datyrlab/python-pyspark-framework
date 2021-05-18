@@ -1,0 +1,12 @@
+{ 
+    
+    "spark_conf" : { 
+        "master": "local[*]",
+        "app_name": "trackable"
+    },
+    
+    "log" : { 
+        "level": null
+    }
+
+}
