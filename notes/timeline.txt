@@ -1,5 +1,8 @@
 https://twitter.com/datyrlab
 
+download the framework
+https://github.com/datyrlab/python-pyspark-framework
+
 -----------------------------------------
 
 PySpark Framework - Python Functional and Object Orientated Programming - Part 1 - ETL
@@ -41,9 +44,6 @@ https://youtu.be/EttGKeT4e3U
 5:28:53 - job - pass all imported dataframes to job transform function
 5:38:45 - job - transform - flatten nested JSON dataframe
 5:49:38 - job - transform - cast columns types, Date and Integer
-
-download the framework
-https://github.com/datyrlab/python-pyspark-framework
 
 
 
