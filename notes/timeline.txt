@@ -1,9 +1,9 @@
-== Timeline
+https://twitter.com/datyrlab
 
-[source%nowrap, text]
-----
-# PySpark Framework - Python Functional and Object Orientated Programming - Part 1 - ETL
-# https://youtu.be/EttGKeT4e3U
+-----------------------------------------
+
+PySpark Framework - Python Functional and Object Orientated Programming - Part 1 - ETL
+https://youtu.be/EttGKeT4e3U
 
 0:00 - intro - welcome if you're a beginner
 2:12 - intro - Python functional and OOP programming with Spark
@@ -44,10 +44,6 @@
 
 download the framework
 https://github.com/datyrlab/python-pyspark-framework
-
-https://twitter.com/datyrlab
-
-----
 
 
 
