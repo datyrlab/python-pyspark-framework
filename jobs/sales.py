@@ -46,7 +46,7 @@ def sparkStart(conf:dict) -> SparkSession:
 
 def stopSpark(spark) -> None:
     """ ends the spark session """
-    spark.stop() if spark else None
+    spark.stop() if isinstance(spark, SparkSession) else None
 
 def importData(spark:SparkSession, datapath:str, pattern:Optional[str]=None) -> list:
     """ get data from directories or files """
@@ -60,12 +60,7 @@ def showMySchema(df:DataFrame, filename:str) -> None:
 
 def transformData(spark:SparkSession, transactionsDf:DataFrame, customersDf:DataFrame, productsDf:DataFrame) -> DataFrame:
     """ call your custom functions to tranform your data """
-    tDf = cleanTransactions(transactionsDf)
-    cDf = cleanCustomers(customersDf)
-    showMySchema(tDf, "transactions") 
-    showMySchema(cDf, "customers")
-    showMySchema(productsDf, "products") 
-    return tDf
+    df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
 
 def cleanTransactions(df:DataFrame) -> DataFrame:
     """ custom function - flatten nested columns and cast column types"""
@@ -77,6 +72,7 @@ def cleanTransactions(df:DataFrame) -> DataFrame:
         ) \
         .withColumn("date", col("date_of_purchase").cast("Date")) \
         .withColumn("price", col("price").cast("Integer"))
+        showMySchema(df2, "transactions") 
         return df2
      
 def cleanCustomers(df:DataFrame) -> DataFrame:
@@ -84,15 +80,24 @@ def cleanCustomers(df:DataFrame) -> DataFrame:
     if isinstance(df, DataFrame):
         df1 = df \
             .withColumn("loyalty_score", col("loyalty_score").cast("Integer"))
+        showMySchema(df1, "customers")
         return df1
 
-def joinDf(df:DataFrame) -> DataFrame:
-    """ custom function - join and aggregate dataframes to produce final dataframe """
-    pass
+def cleanProducts(df:DataFrame) -> DataFrame:
+    """ custom function - cast column types """
+    if isinstance(df, DataFrame):
+        showMySchema(df, "products")
+        return df
+
+def createTempTables(spark:SparkSession, listOfDf:list) -> None:
+    """ input is a list of tuples (dataframe, "tablename") """
+
+    c = [(lambda x: class_pyspark.Sparkclass(config={}).createTempTables(x)) (x) for x in listOfDf]
+    d = [(lambda x: class_pyspark.Sparkclass(config={}).debugTables(x)) (x) for x in spark.catalog.listTables()]
 
 def exportResult(spark:SparkSession, df:DataFrame) -> None:
     """ final output  """
-    df.write.parquet("/home/piuser/Desktop/trackable/final.parquet", mode="overwrite") if isinstance(df, DataFrame) else None
+    df.write.parquet("/home/piuser/Desktop/test/final.parquet", mode="overwrite") if isinstance(df, DataFrame) else None
 
 if __name__ == '__main__':
     main(project_dir)

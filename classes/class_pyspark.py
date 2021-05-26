@@ -9,9 +9,6 @@ from pyspark.sql.dataframe import DataFrame
 from pyspark.sql import SparkSession
 #from pyspark import SparkContext
 
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#sys.path.insert(1, '' + BASE_DIR)
-
 # end::import[]
 
 
@@ -77,6 +74,7 @@ class Sparkclass:
                 data = json.load(f)
             return data
         return openJson(filepath)
+    
     # end::openJson[]
 
 
@@ -85,14 +83,14 @@ class Sparkclass:
         """ will return a list of files inside directory or single file """
 
         try:
-            def fileOrDirectory(datapath:str) -> str:
+            def fileOrDirectory(spark:SparkSession, datapath:str, pattern:Optional[str]=None) -> str:
                 """ check if path is a directory or file """
                 if isinstance(datapath, str) and os.path.exists(datapath):
                     if os.path.isdir(datapath):
-                        return "dir"
+                        return openDirectory(spark, datapath, pattern)
                     elif os.path.isfile(datapath):
-                        return "file"
-            
+                        return openFile(spark, datapath)
+
             def openDirectory(spark:SparkSession, datapath:str, pattern:Optional[str]=None) -> DataFrame:
                 """ if datapath is a directory
                     add more logic to catch files not csv or json
@@ -105,13 +103,13 @@ class Sparkclass:
                         raise ValueError('Cannot create a single dataframe from varying file types or no files found') 
                     return Sparkclass(self.config).createDataFrame(spark, filelist, filetype)
 
-            def openFile(spark:SparkSession, getFileExtension:Callable, datapath:str) -> DataFrame:
+            def openFile(spark:SparkSession, datapath:str) -> DataFrame:
                 """ if datapath is a file 
                     add more logic to catch files not csv or json
                 """
                 if isinstance(datapath, str) and os.path.exists(datapath):
                     filelist = [datapath]
-                    filetype = getFileExtension(datapath)
+                    filetype = Sparkclass(self.config).getFileExtension(datapath)
                     return Sparkclass(self.config).createDataFrame(spark, filelist, filetype)
             
             def getUniqueFileExtentions(filelist:list) -> list:
@@ -121,13 +119,12 @@ class Sparkclass:
                     filetype = list(exts)
                     return filetype[0][1:] if len(filetype) == 1 else None
 
-            pathtype = fileOrDirectory(datapath)
-            return openDirectory(spark, datapath, pattern) if pathtype == "dir" else openFile(spark, Sparkclass(self.config).getFileExtension, datapath) if pathtype == "file" else None
+            return fileOrDirectory(spark, datapath, pattern)
     
         except Exception as e:
-            raise
             #print('Error on line {}'.format(sys.exc_info()[-1].tb_lineno), type(e).__name__, e) 
-    
+            raise
+
     # end::importData[]
 
     
@@ -137,6 +134,7 @@ class Sparkclass:
         if isinstance(filepath, str):
             filename, file_extension = os.path.splitext(filepath)
             return file_extension[1:] if file_extension else None
+    
     # end::getFileExtension[]
     
     
@@ -191,7 +189,6 @@ class Sparkclass:
             return dFfromCSV(filelist) if filetype == "csv" else dFfromJSON(filelist) if filetype == "json" else None
         
         return makeDF(filelist, filetype)
-
             
     # end::createDataFrame[]
 
@@ -213,13 +210,19 @@ class Sparkclass:
     # end::createFile[]
     
 
-    # tag::debugDf[]
-    def debugDf(self, df:DataFrame, filename:str) -> None:
-        """ creates a json file with info from a dataframe  
+    # tag::createTempTables[]
+    def createTempTables(self, tupleDf:tuple) -> None:
+        if isinstance(tupleDf, tuple) and len(tupleDf) == 2:
+            tupleDf[0].createOrReplaceTempView(tupleDf[1])
+            
+    # end::createTempTables[]
+
+    
+    # tag::debugCreateFile[]
+    def debugCreateFile(self, paths:tuple, content:dict) -> None:
+        """ creates a json file with info from a dictonary 
             modify self.debug_dir for directory path, default /tmp/spark
         """
-        def createFilepath(directory:str, filename:str):
-            return f"{directory}/{filename}.json"
 
         def makeDirectory(directory:str) -> None:
             if isinstance(directory, str) and not os.path.exists(directory):
@@ -229,28 +232,60 @@ class Sparkclass:
             if os.path.exists(filepath):
                 os.remove(filepath)
         
-        def dfToString(df):
+        def createFile(filepath:str, content:Any) -> None:
+            with open(filepath, 'a') as out: 
+                out.write(content)
+            out.close()
+        
+        directory = paths[0]
+        filepath = paths[1]
+
+        makeDirectory(directory)
+        removeFile(filepath)
+        createFile(filepath, content)
+
+    # end::debugCreateFile[]
+
+
+    # tag::debugDf[]
+    def debugDf(self, df:DataFrame, filename:str) -> None:
+        
+        def dfToString(df:DataFrame) -> str:
             return df._jdf.schema().treeString()
-            
-        def createContent(df):
+        
+        def createFilepath(directory:str, filename:str) -> str:
+            d = f"{directory}/dataframes"
+            return (d, f"{d}/{filename}.json")
+
+        def createContent(df:DataFrame) -> dict:
             content = {}
             content['count'] = df.count() 
             content['schema'] = json.loads(df.schema.json())
             return json.dumps(content, sort_keys=False, indent=4, default=str)
         
-        def createFile(filepath:str, content:Any) -> None:
-            with open(filepath, 'a') as out: 
-                out.write("{}\n".format(content)) 
-            out.close()
+        paths = createFilepath(self.debug_dir, filename)
+        Sparkclass(self.config).debugCreateFile(paths, createContent(df)) 
         
-        filepath = createFilepath(self.debug_dir, filename)
-        makeDirectory(self.debug_dir)
-        removeFile(filepath)
-        createFile(filepath, createContent(df))
-
     # end::debugDf[]
 
 
+    # tag::debugTables[]
+    def debugTables(self, table) -> None:
+        
+        def createFilepath(directory:str, filename:str) -> str:
+            d = f"{directory}/tables"
+            return (d, f"{d}/{filename}.json")
+        
+        def createContent(table) -> dict:
+            content = {}
+            content['table'] = table._asdict()
+            content['dir.table'] = dir(table)
+            return json.dumps(content, sort_keys=False, indent=4, default=str)
+        
+        paths = createFilepath(self.debug_dir, table.name)
+        Sparkclass(self.config).debugCreateFile(paths, createContent(table)) 
+    
+    # end::debugTables[]
 
 
     
