@@ -97,7 +97,7 @@ def createTempTables(spark:SparkSession, listOfDf:list) -> None:
 
 def exportResult(spark:SparkSession, df:DataFrame) -> None:
     """ final output  """
-    df.write.parquet("/home/piuser/Desktop/test/final.parquet", mode="overwrite") if isinstance(df, DataFrame) else None
+    df.write.parquet("~/Desktop/test/final.parquet", mode="overwrite") if isinstance(df, DataFrame) else None
 
 if __name__ == '__main__':
     main(project_dir)

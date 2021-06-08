@@ -2,9 +2,13 @@
     
     "spark_conf" : { 
         "master": "local[*]",
-        "app_name": "trackable"
+        "appname": "sales"
     },
     
+    "config" : { 
+        "deltalake": false
+    },
+
     "log" : { 
         "level": null
     }

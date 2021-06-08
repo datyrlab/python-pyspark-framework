@@ -7,7 +7,8 @@ from typing import Any, Callable, Optional
 
 from pyspark.sql.dataframe import DataFrame
 from pyspark.sql import SparkSession
-#from pyspark import SparkContext
+
+from delta import configure_spark_with_delta_pip
 
 # end::import[]
 
@@ -22,40 +23,56 @@ class Sparkclass:
 
     # end::init[]
 
-
     # tag::sparkStart[]
     def sparkStart(self, kwargs:dict) -> SparkSession:
-        #print(kwargs)
-        """ spark session from configuraton """
+        """ spark session from dict configuraton """
         
         try:
-            MASTER = kwargs['spark_conf']['master']
-            APP_NAME = kwargs['spark_conf']['app_name']
-            LOG_LEVEL = kwargs['log']['level']
-
-            def createSession(master:Optional[str]="local[*]", app_name:Optional[str]="myapp") -> SparkSession:
+            def createBuilder(master:str, appname:str, config:dict) -> SparkSession.Builder:
                 """ create a spark session """
-                spark = SparkSession\
+                builder = SparkSession\
                     .builder\
-                    .appName(app_name)\
-                    .master(master)\
-                    .getOrCreate()
-                return spark
+                    .appName(appname)\
+                    .master(master)
+                return configDeltalake(builder, config)
+            
+            def configDeltalake(builder:SparkSession.Builder, config:dict) -> SparkSession.Builder:
+                if isinstance(builder, SparkSession.Builder) and config.get('deltalake') == True:
+                    builder \
+                        .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension") \
+                        .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+                    return configure_spark_with_delta_pip(builder)
+                else:
+                    return builder
+            
+            def createSession(builder:SparkSession.Builder) -> SparkSession:
+                if isinstance(builder, SparkSession.Builder):
+                    return builder.getOrCreate()           
 
-            def setLogging(spark:SparkSession, log_level:Optional[str]=None) -> None:
+            def setLogging(spark:SparkSession, log_level:str) -> None:
                 """ set log level - ALL, DEBUG, ERROR, FATAL, INFO, OFF, TRACE, WARN 
                     this function will overide the configuration also set in log4j.properties
                         for example, log4j.rootCategory=ERROR, console
                 """
-                spark.sparkContext.setLogLevel(log_level) if log_level else None 
+                if isinstance(spark, SparkSession):
+                    spark.sparkContext.setLogLevel(log_level) if isinstance(log_level, str) else None 
 
             def getSettings(spark:SparkSession) -> None:
-                """ print spark settings to terminal"""
-                #print(f"\033[1;33m{spark}\033[0m")
-                #print(f"\033[96m{spark.sparkContext.getConf().getAll()}\033[0m")
-                pass
-
-            spark = createSession(MASTER, APP_NAME)
+                if isinstance(spark, SparkSession):
+                    c = {}
+                    c['spark.version'] = spark.version
+                    c['spark.sparkContext'] = spark.sparkContext.getConf().getAll()
+                    content = json.dumps(c, sort_keys=False, indent=4, default=str)
+                    Sparkclass(self.config).debugCreateFile((f"{self.debug_dir}/config", f"{self.debug_dir}/config/sparkSession.json"), content) 
+                    
+            
+            MASTER = kwargs.get('spark_conf', {}).get('master', 'local[*]')
+            APPNAME = kwargs.get('spark_conf', {}).get('appname', 'myapp')
+            CONFIG = kwargs.get('config')
+            LOG_LEVEL = kwargs.get('log', {}).get('level')
+            
+            builder = createBuilder(MASTER, APPNAME, CONFIG)
+            spark = createSession(builder)
             setLogging(spark, LOG_LEVEL)
             getSettings(spark)
             return spark
@@ -73,7 +90,6 @@ class Sparkclass:
             with open(filepath, "r") as f:
                 data = json.load(f)
             return data
-        return openJson(filepath)
     
     # end::openJson[]
 
@@ -169,16 +185,16 @@ class Sparkclass:
             add more functions for other filetypes for example, plain text files to create an RDD
             factor in text files without an extension
         """
-        def dFfromCSV(filelist:list) -> DataFrame:
-            if isinstance(filelist, list) and len(filelist) > 0:
+        def dFfromCSV(spark:SparkSession, filelist:list) -> DataFrame:
+            if isinstance(spark, SparkSession) and isinstance(filelist, list) and len(filelist) > 0:
                 df = spark.read.format("csv") \
                     .option("header", "true")  \
                     .option("mode", "DROPMALFORMED") \
                     .load(filelist)
                 return df
         
-        def dFfromJSON(filelist:list) -> DataFrame:
-            if isinstance(filelist, list) and len(filelist) > 0:
+        def dFfromJSON(spark:SparkSession, filelist:list) -> DataFrame:
+            if isinstance(spark, SparkSession) and isinstance(filelist, list) and len(filelist) > 0:
                 df = spark.read.format("json") \
                     .option("mode", "PERMISSIVE") \
                     .option("primitivesAsString", "true") \
@@ -186,7 +202,7 @@ class Sparkclass:
                 return df
         
         def makeDF(filelist, filetype):
-            return dFfromCSV(filelist) if filetype == "csv" else dFfromJSON(filelist) if filetype == "json" else None
+            return dFfromCSV(spark, filelist) if filetype == "csv" else dFfromJSON(spark, filelist) if filetype == "json" else None
         
         return makeDF(filelist, filetype)
             
@@ -246,7 +262,7 @@ class Sparkclass:
 
     # end::debugCreateFile[]
 
-
+    
     # tag::debugDf[]
     def debugDf(self, df:DataFrame, filename:str) -> None:
         
