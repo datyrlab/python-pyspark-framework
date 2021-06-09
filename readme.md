@@ -9,12 +9,12 @@ python3 python-pyspark-framework/jobs/sales.py
 first install delta-spark via pip3 then in json/sales.json, change 
 
 ```Json
-{"config":{deltalake:false}}
+{"config":{"deltalake":false}}
 ```
 to
 
 ```Json
-{"config":{deltalake:true}}
+{"config":{"deltalake":true}}
 ```
 
 I've set this to false to allow you to install Delta Lake first should you want to use it
