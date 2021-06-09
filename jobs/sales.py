@@ -31,7 +31,6 @@ def main(project_dir:str):
     
     # start transformations
     finalDf = transformData(spark, transactionsDf, customersDf, productsDf) 
-    exportResult(spark, finalDf)
     stopSpark(spark)
 
 def openConfig(filepath:str) -> dict:
@@ -60,8 +59,9 @@ def showMySchema(df:DataFrame, filename:str) -> None:
 
 def transformData(spark:SparkSession, transactionsDf:DataFrame, customersDf:DataFrame, productsDf:DataFrame) -> DataFrame:
     """ call your custom functions to tranform your data """
-    df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
-
+    #df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
+    exportResult(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
+    
 def cleanTransactions(df:DataFrame) -> DataFrame:
     """ custom function - flatten nested columns and cast column types"""
     if isinstance(df, DataFrame):
@@ -90,14 +90,13 @@ def cleanProducts(df:DataFrame) -> DataFrame:
         return df
 
 def createTempTables(spark:SparkSession, listOfDf:list) -> None:
-    """ input is a list of tuples (dataframe, "tablename") """
-
+    """ input is a list of tuples (dataframe, "tablename"), create temporary SQL tables in memory"""
     c = [(lambda x: class_pyspark.Sparkclass(config={}).createTempTables(x)) (x) for x in listOfDf]
     d = [(lambda x: class_pyspark.Sparkclass(config={}).debugTables(x)) (x) for x in spark.catalog.listTables()]
-
-def exportResult(spark:SparkSession, df:DataFrame) -> None:
-    """ final output  """
-    df.write.parquet("~/Desktop/test/final.parquet", mode="overwrite") if isinstance(df, DataFrame) else None
+    
+def exportResult(spark:SparkSession, listOfDf:list) -> None:
+    """ input is a list of tuples (dataframe, "tablename"), write to various file formats including delta lake tables """
+    c = [(lambda x: class_pyspark.Sparkclass(config={"export":"/tmp/delta"}).exportDf(x)) (x) for x in listOfDf]
 
 if __name__ == '__main__':
     main(project_dir)

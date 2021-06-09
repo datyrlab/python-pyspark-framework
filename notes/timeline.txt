@@ -5,6 +5,44 @@ https://github.com/datyrlab/python-pyspark-framework
 
 -----------------------------------------
 
+PySpark Framework - Python Functional and OOP - Part 3 - Export data to Delta Lake 
+https://youtu.be/fLYRaVsnsqU
+
+0:00 - intro
+3:54 - install latest version of Spark
+15:07 - install delta-spark via pip, pyspark update
+18:16 - jobs -  include delta lake
+29:11 - class - functions SparkSession.builder delta lake
+49:11 - write what's in your SparkSession to a json file for debugging
+1:01:12 - jobs - add a function to export dataframes
+1:07:56 - class - add a method to export dataframes, first test a parquet file format
+1:30:31 - class - change the export format to a delta table
+1:32:55 - class - export delta tables with partitionBy on a column
+1:37:05 - jobs - loop dataframes to create delta tables using list comprehension with lambda
+
+-----------------------------------------
+
+PySpark Framework - Python Functional and OOP - Part 2 - ETL code clean up & debug
+https://youtu.be/i00HQn9pnkI
+
+0:00 - code clean up - class - create a method to open JSON
+9:28 - code clean up - jobs - undo nested functions
+13:11 - code clean up - class - remove functions as arguments
+15:51 - code clean up - class - move if statements into functions
+21:27 - code clean up - remove printing anything to terminal
+22:58 - class - create a method to write dataframe schema to file
+58:42 - github code repository
+1:00:43 - code clean up - class - move if statement into function
+1:14:00 - code clean up - jobs - move function call showMySchema
+1:18:00 - jobs - function to convert dataframes to temp SQL tables
+1:31:14 - jobs - pass dataframes to function as list of tuples
+1:35:53 - class - new method to create spark temporary SQL tables
+1:39:11 - jobs - list comprehension + lambda to iterate list
+1:48:03 - class - parse tuple dataframe and create temp SQL table
+1:53:55 - class - update debugging to write JSON files for tables
+
+-----------------------------------------
+
 PySpark Framework - Python Functional and Object Orientated Programming - Part 1 - ETL
 https://youtu.be/EttGKeT4e3U
 
@@ -44,36 +82,4 @@ https://youtu.be/EttGKeT4e3U
 5:28:53 - job - pass all imported dataframes to job transform function
 5:38:45 - job - transform - flatten nested JSON dataframe
 5:49:38 - job - transform - cast columns types, Date and Integer
-
------------------------------------------
-
-PySpark Framework - Python Functional and OOP - Part 2 - ETL code clean up & debug
-https://youtu.be/i00HQn9pnkI
-
-0:00 - code clean up - class - create a method to open JSON
-9:28 - code clean up - jobs - undo nested functions
-13:11 - code clean up - class - remove functions as arguments
-15:51 - code clean up - class - move if statements into functions
-21:27 - code clean up - remove printing anything to terminal
-22:58 - class - create a method to write dataframe schema to file
-58:42 - github code repository
-1:00:43 - code clean up - class - move if statement into function
-1:14:00 - code clean up - jobs - move function call showMySchema
-1:18:00 - jobs - function to convert dataframes to temp SQL tables
-1:31:14 - jobs - pass dataframes to function as list of tuples
-1:35:53 - class - new method to create spark temporary SQL tables
-1:39:11 - jobs - list comprehension + lambda to iterate list
-1:48:03 - class - parse tuple dataframe and create temp SQL table
-1:53:55 - class - update debugging to write JSON files for tables
-
-
-
-
-
-
-
-
-
-
-
 

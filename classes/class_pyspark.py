@@ -232,6 +232,16 @@ class Sparkclass:
             tupleDf[0].createOrReplaceTempView(tupleDf[1])
             
     # end::createTempTables[]
+   
+
+    # tag::exportDf[]
+    def exportDf(self, tupleDf:tuple) -> None:
+        if isinstance(tupleDf, tuple) and len(tupleDf) == 2 and self.config.get('export'):
+            print(tupleDf)  
+            path = f"{self.config.get('export')}/{tupleDf[1]}"
+            tupleDf[0].write.format("delta").mode("overwrite").save(path)
+            
+    # end::exportDf[]
 
     
     # tag::debugCreateFile[]
