@@ -59,8 +59,8 @@ def showMySchema(df:DataFrame, filename:str) -> None:
 
 def transformData(spark:SparkSession, transactionsDf:DataFrame, customersDf:DataFrame, productsDf:DataFrame) -> DataFrame:
     """ call your custom functions to tranform your data """
-    #df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
-    exportResult(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
+    df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
+    #exportResult(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
     
 def cleanTransactions(df:DataFrame) -> DataFrame:
     """ custom function - flatten nested columns and cast column types"""

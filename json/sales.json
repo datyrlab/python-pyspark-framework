@@ -6,7 +6,7 @@
     },
     
     "config" : { 
-        "deltalake": true
+        "deltalake": false
     },
 
     "log" : { 

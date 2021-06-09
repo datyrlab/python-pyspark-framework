@@ -237,7 +237,6 @@ class Sparkclass:
     # tag::exportDf[]
     def exportDf(self, tupleDf:tuple) -> None:
         if isinstance(tupleDf, tuple) and len(tupleDf) == 2 and self.config.get('export'):
-            print(tupleDf)  
             path = f"{self.config.get('export')}/{tupleDf[1]}"
             tupleDf[0].write.format("delta").mode("overwrite").save(path)
             
