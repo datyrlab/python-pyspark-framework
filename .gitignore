@@ -3,6 +3,7 @@ __pycache__
 *_02.*
 *_03.*
 *.adoc
+*.crc
 *.log
 *.swp
 DELETE
