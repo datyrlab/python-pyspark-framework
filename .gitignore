@@ -10,4 +10,14 @@ sql
 screens
 spark-context-textfile.json
 spark-session.json
+struct
+test
+test_truct
+timeline.txt
 *twitter*
+twitter_user-timeline/batch1
+twitter_user-timeline/batch2
+twitter_user-timeline/struct
+merge.py
+merge-struct.py
+pre-version

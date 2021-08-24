@@ -14,23 +14,29 @@ from pyspark.sql.functions import col, explode
 sys.path.insert(1, project_dir)
 from classes import class_pyspark
 
-def main(project_dir:str):
-    """ starts a spark job
-        second argument in importData(path, pattern) adds a regex pattern to filter file names in a directory
+def main():
+    """ purpose of this application is to,
+        1. import raw data (csv, json, etc) into a spark dataframe
+        2. transform the dataframe
+        3. export the dataframe result (could be any file format but here we choose to save to a delta table)
     """
 
     # start session from json config file
     conf = openConfig(f"{project_dir}/json/sales.json")
     spark = sparkStart(conf)
     
-    # dataframes
-    #transactionsDf = importData(spark, f"{project_dir}/test-data/sales/transactions") # all fiiles
-    transactionsDf = importData(spark, f"{project_dir}/test-data/sales/transactions", ".json$") # filter json only
+    # 1. import the raw data into a spark dataframe
+    # 3rd argument 'pattern'... importData(spark, path, pattern) ...adds a regex pattern to filter file names in a directory
+    # transactionsDf = importData(spark, f"{project_dir}/test-data/sales/transactions") # example with no pattern will import all fiiles
+    transactionsDf = importData(spark, f"{project_dir}/test-data/sales/transactions", ".json$") # will filter json files only
     customersDf = importData(spark, f"{project_dir}/test-data/sales/customers.csv")
     productsDf = importData(spark, f"{project_dir}/test-data/sales/products.csv")
+
+    # 2. transform the dataframe and 3. export the dataframe result
+    delta_path = f"{project_dir}/test-delta/sales"
+    finalDf = transformData(spark, transactionsDf, customersDf, productsDf, delta_path) 
     
-    # start transformations
-    finalDf = transformData(spark, transactionsDf, customersDf, productsDf) 
+    # close and quit the spark session
     stopSpark(spark)
 
 def openConfig(filepath:str) -> dict:
@@ -57,11 +63,35 @@ def showMySchema(df:DataFrame, filename:str) -> None:
     if isinstance(df, DataFrame):
         class_pyspark.Sparkclass(config={}).debugDf(df, filename)
 
-def transformData(spark:SparkSession, transactionsDf:DataFrame, customersDf:DataFrame, productsDf:DataFrame) -> DataFrame:
+def transformData(spark:SparkSession, transactionsDf:DataFrame, customersDf:DataFrame, productsDf:DataFrame, path:str) -> DataFrame:
     """ call your custom functions to tranform your data """
-    df = createTempTables(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
-    #exportResult(spark, [ (cleanTransactions(transactionsDf), "transactions"), (cleanCustomers(customersDf), "customers"), (cleanProducts(productsDf), "products") ])
+    # wrap the exportResult function around the transform function, which saves the transform result to a delta table 
+    # after exporting the result we're now done with the ETL
+    exportResult([ \
+        (spark, cleanTransactions(transactionsDf), {"format":"delta", "path":f"{path}/transactions", "key":"customer_id"}), \
+        (spark, cleanCustomers(customersDf), {"format":"delta", "path":f"{path}/customers", "key":"customer_id"}), \
+        (spark, cleanProducts(productsDf), {"format":"delta", "path":f"{path}/products", "key":"product_id"}) \
+    ])
     
+    # this final step needn't be in jobs/sales.py and would be ideally placed in a new jobs application
+    # i'm including it as indication that we could perform further queries on the delta table 
+    # because we might load historic data from our existing tables or other data from a different table
+    # here I'll use an example of the delta tables we've already just saved
+    l = loadDeltaTables([ \
+        (spark, f"{path}/transactions", "delta"), \
+        (spark, f"{path}/customers", "delta"), \
+        (spark, f"{path}/products", "delta") \
+    ])
+    # if you prefer sql to directly quering dataframes then zip the list of 'dataframes' with a list of 'table names' 
+    listOfDf = list(zip(l, ["transactions", "customers", "products"]))
+    # then create temp tables that we can perform sql queries on
+    createTempTables(spark, listOfDf)
+    # from here, include functions to do more stuff
+    
+    # print delta tables to terminal 
+    df = spark.sql("SELECT * FROM transactions")
+    df.show()
+
 def cleanTransactions(df:DataFrame) -> DataFrame:
     """ custom function - flatten nested columns and cast column types"""
     if isinstance(df, DataFrame):
@@ -94,12 +124,18 @@ def createTempTables(spark:SparkSession, listOfDf:list) -> None:
     c = [(lambda x: class_pyspark.Sparkclass(config={}).createTempTables(x)) (x) for x in listOfDf]
     d = [(lambda x: class_pyspark.Sparkclass(config={}).debugTables(x)) (x) for x in spark.catalog.listTables()]
     
-def exportResult(spark:SparkSession, listOfDf:list) -> None:
+def exportResult(listOfDf:list) -> None:
     """ input is a list of tuples (dataframe, "tablename"), write to various file formats including delta lake tables """
-    c = [(lambda x: class_pyspark.Sparkclass(config={"export":"/tmp/delta"}).exportDf(x)) (x) for x in listOfDf]
+    c = [(lambda x: class_pyspark.Sparkclass(config={}).exportDf(x)) (x) for x in listOfDf]
+
+def loadDeltaTables(listOfPaths:list) -> list:
+    """ load data from delta tables for various reasons like historic or additional data sources 
+        you could also include this function in our main function above rather than from our transformData function
+    """
+    return [(lambda x: class_pyspark.Sparkclass(config={}).loadTables(x[0], x[1], x[2])) (x) for x in listOfPaths]
 
 if __name__ == '__main__':
-    main(project_dir)
+    main()
 
 
 

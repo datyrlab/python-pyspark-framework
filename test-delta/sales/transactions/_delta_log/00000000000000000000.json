@@ -1,0 +1,11 @@
+{"commitInfo":{"timestamp":1629795187659,"operation":"WRITE","operationParameters":{"mode":"Overwrite","partitionBy":"[]"},"isBlindAppend":false,"operationMetrics":{"numFiles":"8","numOutputBytes":"66330","numOutputRows":"4497"}}}
+{"protocol":{"minReaderVersion":1,"minWriterVersion":2}}
+{"metaData":{"id":"d4c142a0-5eaf-422a-9e4c-a6b0e53bdc52","format":{"provider":"parquet","options":{}},"schemaString":"{\"type\":\"struct\",\"fields\":[{\"name\":\"customer_id\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"date_of_purchase\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"price\",\"type\":\"integer\",\"nullable\":true,\"metadata\":{}},{\"name\":\"product_id\",\"type\":\"string\",\"nullable\":true,\"metadata\":{}},{\"name\":\"date\",\"type\":\"date\",\"nullable\":true,\"metadata\":{}}]}","partitionColumns":[],"configuration":{},"createdTime":1629795185639}}
+{"add":{"path":"part-00000-59b3ea82-ad21-452f-af60-630238529d56-c000.snappy.parquet","partitionValues":{},"size":10483,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00001-8625a6a0-2a0d-4e2f-b946-e40604528602-c000.snappy.parquet","partitionValues":{},"size":9536,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00002-fdca9c4d-a613-416c-a979-f2c9a50fc57d-c000.snappy.parquet","partitionValues":{},"size":9161,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00003-5b21f7df-32a2-4ce6-8ca5-aa240b85bae9-c000.snappy.parquet","partitionValues":{},"size":8482,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00004-25b116a8-f15a-40a2-b64e-66dd18ee9b6b-c000.snappy.parquet","partitionValues":{},"size":8325,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00005-c29a3a04-07c7-45b9-b3b6-ea71a8ee649b-c000.snappy.parquet","partitionValues":{},"size":7795,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00006-4b79f708-f1e3-49cf-aa91-662e67e366ea-c000.snappy.parquet","partitionValues":{},"size":7338,"modificationTime":1629795186000,"dataChange":true}}
+{"add":{"path":"part-00007-f8459644-bf66-490e-aa93-24dc760c7f82-c000.snappy.parquet","partitionValues":{},"size":5210,"modificationTime":1629795186000,"dataChange":true}}
