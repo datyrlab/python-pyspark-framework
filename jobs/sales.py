@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+# tag::code[]
 import logging
 import json, os, re, sys
 from typing import Callable, Optional
@@ -137,5 +138,6 @@ def loadDeltaTables(listOfPaths:list) -> list:
 if __name__ == '__main__':
     main()
 
+# end::code[]
 
 

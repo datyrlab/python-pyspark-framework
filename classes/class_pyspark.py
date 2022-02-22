@@ -14,13 +14,10 @@ from pyspark.sql import SparkSession
 class Sparkclass:     
     """ handles files and spark tasks """
 
-    # tag::init[]
     def __init__(self, config:dict):
         self.config = config
         self.debug_dir = "/tmp/spark"
         self.config_paths = (f"{self.debug_dir}/config", f"{self.debug_dir}/config/sparkSession.json")
-
-    # end::init[]
 
     # tag::sparkStart[]
     def sparkStart(self, kwargs:dict) -> SparkSession:
@@ -192,7 +189,7 @@ class Sparkclass:
                 return df
         
         def dfFromJSON(spark:SparkSession, filelist:list, filetype:str) -> DataFrame:
-            if filetype == "json":
+            if filetype == "json" or filetype == "har":
                 df = spark.read.format("json") \
                     .option("mode", "PERMISSIVE") \
                     .load(filelist)
